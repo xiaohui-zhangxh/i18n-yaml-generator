@@ -24,10 +24,10 @@ module I18nYaml
           hash_for_yaml = {}
 
           # Model name
-          hash_for_yaml.deep_merge! wrap_hash(human_name, [current_orm, 'models'] + i18n_scope.split('.'))
-          
+          hash_for_yaml.deep_merge! wrap_hash(human_name, [current_orm, 'models', i18n_scope.gsub('.', '/')])
+
           # Attributes
-          hash_for_yaml.deep_merge! wrap_hash(attributes_hash, [current_orm, 'attributes'] + i18n_scope.split('.'))
+          hash_for_yaml.deep_merge! wrap_hash(attributes_hash, [current_orm, 'attributes', i18n_scope.gsub('.', '/')])
 
           # Errors
           hash_for_yaml.deep_merge! wrap_hash({ singular_name => nil }, [current_orm, 'errors'])
