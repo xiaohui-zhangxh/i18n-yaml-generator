@@ -4,7 +4,11 @@ module I18nYamlGenerator
   class Railtie < ::Rails::Railtie
     config.i18n_yaml_generator = I18nYamlGenerator::Configuration.new(false)
 
-    generators do
+    generators do |app|
+      if ::Rails::VERSION::STRING >= '3.2'
+        Rails::Generators.configure!(app.config.generators)
+      end
+
       require 'i18n_yaml_generator/helpers'
       require 'rails/generators/rails/scaffold_controller/scaffold_controller_generator'
       require 'rails/generators/rails/model/model_generator'

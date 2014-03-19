@@ -8,29 +8,33 @@ module I18nYaml
       include Rails::Generators::ResourceHelpers
       include I18nYamlGenerator::Helpers
 
-      SUPPORTED_ORMS = %w(active_record active_model mongoid)
+      SUPPORTED_ORMS = {
+        "active_record" => "activerecord",
+        "active_model" => "activemodel",
+        "mongoid"=> "mongoid"
+      }
 
       def model_i18n_yaml_file
         current_orm = options.orm.to_s
 
-        unless SUPPORTED_ORMS.include? current_orm
+        unless SUPPORTED_ORMS.keys.include? current_orm
           say "Not creating translation file - '#{current_orm}' not supported"
           return
         end
 
-        config = Rails.application.config.i18n_yaml_generator
+        orm_i18n_key = SUPPORTED_ORMS[current_orm]
 
         I18n.available_locales.each do |locale|
           hash_for_yaml = {}
 
           # Model name
-          hash_for_yaml.deep_merge! wrap_hash(human_name, [current_orm, 'models'] + i18n_scope.split('.'))
-          
+          hash_for_yaml.deep_merge! wrap_hash(human_name, [orm_i18n_key, 'models', i18n_scope.gsub('.', '/')])
+
           # Attributes
-          hash_for_yaml.deep_merge! wrap_hash(attributes_hash, [current_orm, 'attributes'] + i18n_scope.split('.'))
+          hash_for_yaml.deep_merge! wrap_hash(attributes_hash, [orm_i18n_key, 'attributes', i18n_scope.gsub('.', '/')])
 
           # Errors
-          hash_for_yaml.deep_merge! wrap_hash({ singular_name => nil }, [current_orm, 'errors'])
+          hash_for_yaml.deep_merge! wrap_hash({ singular_name => nil }, [orm_i18n_key, 'errors'])
 
           # Helpers
           hash_for_yaml.deep_merge! wrap_hash({ singular_name => nil }, ['helpers'])
