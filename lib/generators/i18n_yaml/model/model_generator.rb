@@ -34,7 +34,7 @@ module I18nYaml
           hash_for_yaml.deep_merge! wrap_hash(attributes_hash, [orm_i18n_key, 'attributes', i18n_scope.gsub('.', '/')])
 
           # Errors
-          hash_for_yaml.deep_merge! wrap_hash({ singular_name => nil }, [orm_i18n_key, 'errors'])
+          hash_for_yaml.deep_merge! wrap_hash({ singular_name => nil }, [orm_i18n_key, 'errors', 'models'])
 
           # Helpers
           hash_for_yaml.deep_merge! wrap_hash({ singular_name => nil }, ['helpers'])
