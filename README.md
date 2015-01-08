@@ -1,4 +1,4 @@
-# I18n yaml generator (for Rails 3)
+# I18n yaml generator (Suport Rails 4)
 
 ## Description
 
